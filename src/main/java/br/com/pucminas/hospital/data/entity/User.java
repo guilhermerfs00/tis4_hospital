@@ -22,14 +22,11 @@ public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "id_user")
+    private Long idUser;
 
     @Column(name = "user_name", unique = true)
     private String userName;
-
-    @Column(name = "full_name")
-    private String fullName;
 
     @Column(name = "password")
     private String password;
@@ -43,6 +40,8 @@ public class User implements UserDetails, Serializable {
     @Column(name = "credentials_non_expired")
     private Boolean credentialsNonExpired;
 
+    @Column(name = "enabled")
+    private Boolean enabled;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

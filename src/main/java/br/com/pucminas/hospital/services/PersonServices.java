@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,15 +23,10 @@ public class PersonServices {
     PersonRepository repository;
 
     public PersonDTO create(Person person) {
-//		var entity = DozerConverter.parseObject(person, Person.class);
-//		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
-//		return vo;
         return null;
     }
 
     public Page<PersonDTO> findPersonByName(String firstName, Pageable pageable) {
-//        var page = repository.findPersonByName(firstName, pageable);
-//        return page.map(this::convertToPersonVO);
         return null;
     }
 
@@ -46,29 +40,11 @@ public class PersonServices {
 
     public PersonDTO findById(Long id) {
 
-        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-//        return DozerConverter.parseObject(entity, PersonVO.class);
+        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Nenhum registro encontrado com esse ID"));
         return null;
     }
 
     public PersonDTO update(Person person) {
-//        var entity = repository.findById(person.getKey()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-//
-//        entity.setFirstName(person.getFirstName());
-//        entity.setLastName(person.getLastName());
-//        entity.setAddress(person.getAddress());
-//        entity.setGender(person.getGender());
-//
-//        var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
-//        return vo;
-        return null;
-    }
-
-    @Transactional
-    public Person disablePerson(Long id) {
-//        repository.disablePersons(id);
-//        var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-//        return DozerConverter.parseObject(entity, PersonVO.class);
         return null;
     }
 

@@ -1,7 +1,5 @@
 package br.com.pucminas.hospital.exception.handler;
 
-import java.util.Date;
-
 import br.com.pucminas.hospital.exception.ExceptionResponse;
 import br.com.pucminas.hospital.exception.InvalidJwtAuthenticationException;
 import br.com.pucminas.hospital.exception.ResourceNotFoundException;
@@ -12,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Date;
 
 @ControllerAdvice
 @RestController
@@ -44,7 +44,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                         new Date(),
                         ex.getMessage(),
                         request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
 }

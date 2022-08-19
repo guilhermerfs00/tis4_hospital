@@ -14,7 +14,7 @@ import java.io.IOException;
 public class CORSFilter implements Filter {
 
     private static final String LOCAL = "http://localhost:8100"; // URL
-    private static final String REMOTO = "https://cmf-front.netlify.app"; // OTHER URL
+    private static final String REMOTO = "https://"; // OTHER URL
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -35,13 +35,5 @@ public class CORSFilter implements Filter {
         if (!"OPTIONS".equalsIgnoreCase(request.getMethod())) {
             chain.doFilter(req, res);
         }
-    }
-
-    @Override
-    public void destroy() {
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
     }
 }

@@ -1,66 +1,42 @@
 package br.com.pucminas.hospital.controller;
 
-import br.com.pucminas.hospital.repository.UserRepository;
 import br.com.pucminas.hospital.security.AccountCredentials;
-import br.com.pucminas.hospital.security.jwt.JwtTokenProvider;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import br.com.pucminas.hospital.services.AuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.http.ResponseEntity.ok;
-
-@Api(tags = "AuthenticationEndpoint")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    AuthServices authServices;
 
-    @Autowired
-    JwtTokenProvider tokenProvider;
-
-    @Autowired
-    UserRepository repository;
-
-    @ApiOperation(value = "Authenticates a user and returns a token")
-    @PostMapping(value = "/signin", produces = {"application/json", "application/xml", "application/x-yaml"}, consumes = {"application/json", "application/xml", "application/x-yaml"})
+    @PostMapping(value = "/signin")
     public ResponseEntity signin(@RequestBody AccountCredentials data) {
-        try {
-            var username = data.getUsername();
-            var pasword = data.getPassword();
+        if (checkIfParamsIsNotNull(data))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Solicitação inválida!");
+        var token = authServices.signin(data);
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Solicitação de cliente inválida!");
+        return token;
+    }
 
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, pasword));
+    @PutMapping(value = "/refresh/{username}")
+    public ResponseEntity refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
+        if (checkIfParamsIsNotNull(username, refreshToken))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Solicitação inválida!");
+        var token = authServices.refreshToken(username, refreshToken);
+        if (token == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Solicitação inválida!");
+        return token;
+    }
 
-            var user = repository.findByUsername(username);
+    private boolean checkIfParamsIsNotNull(String username, String refreshToken) {
+        return refreshToken == null || refreshToken.isBlank() || username == null || username.isBlank();
+    }
 
-            var token = "";
-
-            if (user != null) {
-                token = tokenProvider.createToken(username, null);
-            } else {
-                throw new UsernameNotFoundException("Username " + username + " not found!");
-            }
-
-            Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
-            model.put("token", token);
-            return ok(model);
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username/password supplied!");
-        }
+    private boolean checkIfParamsIsNotNull(AccountCredentials data) {
+        return data == null || data.getUsername() == null || data.getUsername().isBlank() || data.getPassword() == null || data.getPassword().isBlank();
     }
 }

@@ -21,11 +21,9 @@ public class ExceptionResponse implements Serializable {
 	public Date getTimestamp() {
 		return timestamp;
 	}
-
 	public String getMessage() {
 		return message;
 	}
-
 	public String getDetails() {
 		return details;
 	}
