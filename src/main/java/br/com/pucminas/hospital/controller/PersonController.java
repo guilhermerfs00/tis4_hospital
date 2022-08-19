@@ -1,55 +1,30 @@
 package br.com.pucminas.hospital.controller;
 
+
+import br.com.pucminas.hospital.data.dto.PersonDTO;
+import br.com.pucminas.hospital.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/person/")
+@Controller
+@RequestMapping("/person")
 public class PersonController {
 
-//	@Autowired
-//	private PersonServices service;
+    @Autowired
+    private PersonServices service;
 
-
-    @ApiOperation(value = "Buscar todos os usuarios")
     @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit, @RequestParam(value = "direction", defaultValue = "asc") String direction) {
-
-        var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
-
-        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "nome"));
-
-//        Page<PersonDTO> persons = service.findAll(pageable);
-
-//        persons.stream().forEach(p -> p.add(
-//                                linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()
-//                        )
-//                );
-//
-//        PagedResources<?> resources = assembler.toResource(persons);
-
-//        return new ResponseEntity<>(resources, HttpStatus.OK);
-        return null;
+    public ResponseEntity<List<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                   @RequestParam(value = "limit", defaultValue = "12") int limit,
+                                                   @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        var personDTOList = service.findAll(page, limit);
+        return new ResponseEntity<>(personDTOList, HttpStatus.OK);
     }
 }

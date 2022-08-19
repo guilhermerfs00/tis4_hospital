@@ -17,7 +17,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.pucminas.controller"))
+                .apis(RequestHandlerSelectors.basePackage("br.com.pucminas.hospital.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());

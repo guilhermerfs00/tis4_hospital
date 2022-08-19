@@ -1,10 +1,12 @@
 package br.com.pucminas.hospital.data.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PersonDTO {
 
+    @JsonIgnore
     private Integer idPerson;
 
     @NotEmpty
