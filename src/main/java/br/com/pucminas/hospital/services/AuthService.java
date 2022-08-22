@@ -1,9 +1,9 @@
 package br.com.pucminas.hospital.services;
 
-import br.com.pucminas.hospital.data.dto.AccountCredentialsDTO;
-import br.com.pucminas.hospital.data.dto.TokenDTO;
+import br.com.pucminas.hospital.model.dto.AccountCredentialsDTO;
+import br.com.pucminas.hospital.model.dto.TokenDTO;
 import br.com.pucminas.hospital.repository.UserRepository;
-import br.com.pucminas.hospital.security.jwt.JwtTokenProvider;
+import br.com.pucminas.hospital.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +44,10 @@ public class AuthService {
             throw new BadCredentialsException("Usuário ou senha inválidos!");
         }
 
+    }
+
+    public boolean checkIfParamsIsNull(AccountCredentialsDTO data) {
+        return data == null || data.getUsername() == null || data.getUsername().isBlank() || data.getPassword() == null || data.getPassword().isBlank();
     }
 
 }

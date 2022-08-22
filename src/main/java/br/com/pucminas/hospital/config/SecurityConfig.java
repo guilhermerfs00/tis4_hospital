@@ -1,7 +1,7 @@
 package br.com.pucminas.hospital.config;
 
-import br.com.pucminas.hospital.security.jwt.JwtConfigurer;
-import br.com.pucminas.hospital.security.jwt.JwtTokenProvider;
+import br.com.pucminas.hospital.security.JwtConfigurer;
+import br.com.pucminas.hospital.security.JwtTokenProvider;
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

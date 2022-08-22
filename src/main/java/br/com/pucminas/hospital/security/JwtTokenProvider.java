@@ -1,7 +1,7 @@
-package br.com.pucminas.hospital.security.jwt;
+package br.com.pucminas.hospital.security;
 
-import br.com.pucminas.hospital.data.dto.TokenDTO;
 import br.com.pucminas.hospital.exceptions.InvalidJwtAuthenticationException;
+import br.com.pucminas.hospital.model.dto.TokenDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -88,7 +88,7 @@ public class JwtTokenProvider {
             }
             return true;
         } catch (Exception e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token!");
+            throw new InvalidJwtAuthenticationException("Token JWT expirado ou inválido!");
         }
     }
 }

@@ -1,4 +1,4 @@
-package br.com.pucminas.hospital.data.entity;
+package br.com.pucminas.hospital.model.entity;
 
 import lombok.*;
 
@@ -8,8 +8,6 @@ import java.io.Serializable;
 @Table(name = "person")
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

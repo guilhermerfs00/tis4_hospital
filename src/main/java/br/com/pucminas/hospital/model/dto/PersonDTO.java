@@ -1,4 +1,4 @@
-package br.com.pucminas.hospital.data.dto;
+package br.com.pucminas.hospital.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

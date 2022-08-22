@@ -1,4 +1,4 @@
-package br.com.pucminas.hospital.security.jwt;
+package br.com.pucminas.hospital.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

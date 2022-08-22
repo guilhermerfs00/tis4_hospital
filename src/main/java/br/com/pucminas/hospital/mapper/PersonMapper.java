@@ -1,7 +1,7 @@
 package br.com.pucminas.hospital.mapper;
 
-import br.com.pucminas.hospital.data.dto.PersonDTO;
-import br.com.pucminas.hospital.data.entity.Person;
+import br.com.pucminas.hospital.model.dto.PersonDTO;
+import br.com.pucminas.hospital.model.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
