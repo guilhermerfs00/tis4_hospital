@@ -1,7 +1,7 @@
 package br.com.pucminas.hospital.security.jwt;
 
 import br.com.pucminas.hospital.data.dto.TokenDTO;
-import br.com.pucminas.hospital.exception.InvalidJwtAuthenticationException;
+import br.com.pucminas.hospital.exceptions.InvalidJwtAuthenticationException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,7 +24,7 @@ import java.util.List;
 @Service
 public class JwtTokenProvider {
 
-    @Value("${security.jwt.token.secret-key:secret}")
+    @Value("${security.jwt.token.secret-key}")
     private String secretKey = "secret";
 
     @Value("${security.jwt.token.expire-length:3600000}")
@@ -41,34 +41,22 @@ public class JwtTokenProvider {
         algorithm = Algorithm.HMAC256(secretKey.getBytes());
     }
 
-    public TokenDTO createAccessToken(String username) {
+    public TokenDTO createAccessToken(String username, List<String> roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-        var accessToken = getAccessToken(username, now, validity);
-        var refreshToken = getRefreshToken(username, now);
-
+        var accessToken = getAccessToken(username, roles, now, validity);
+        var refreshToken = getRefreshToken(username, roles, now);
         return new TokenDTO(username, true, now, validity, accessToken, refreshToken);
     }
 
-
-    public TokenDTO refreshToken(String refreshToken) {
-        if (refreshToken.contains("Bearer ")) refreshToken = refreshToken.substring("Bearer ".length());
-
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = verifier.verify(refreshToken);
-        String username = decodedJWT.getSubject();
-        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
-        return createAccessToken(username);
-    }
-
-    private String getAccessToken(String username, Date now, Date validity) {
+    private String getAccessToken(String username, List<String> roles, Date now, Date validity) {
         String issuerUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-        return JWT.create().withIssuedAt(now).withExpiresAt(validity).withSubject(username).withIssuer(issuerUrl).sign(algorithm).strip();
+        return JWT.create().withClaim("roles", roles).withIssuedAt(now).withExpiresAt(validity).withSubject(username).withIssuer(issuerUrl).sign(algorithm).strip();
     }
 
-    private String getRefreshToken(String username, Date now) {
+    private String getRefreshToken(String username, List<String> roles, Date now) {
         Date validityRefreshToken = new Date(now.getTime() + (validityInMilliseconds * 3));
-        return JWT.create().withIssuedAt(now).withExpiresAt(validityRefreshToken).withSubject(username).sign(algorithm).strip();
+        return JWT.create().withClaim("roles", roles).withIssuedAt(now).withExpiresAt(validityRefreshToken).withSubject(username).sign(algorithm).strip();
     }
 
     public Authentication getAuthentication(String token) {
@@ -79,14 +67,13 @@ public class JwtTokenProvider {
 
     private DecodedJWT decodedToken(String token) {
         Algorithm alg = Algorithm.HMAC256(secretKey.getBytes());
-        JWTVerifier verifier = JWT.require(alg).build();
-        DecodedJWT decodedJWT = verifier.verify(token);
+        JWTVerifier verifyer = JWT.require(alg).build();
+        DecodedJWT decodedJWT = verifyer.verify(token);
         return decodedJWT;
     }
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring("Bearer ".length());
         }

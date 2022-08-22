@@ -2,7 +2,7 @@ package br.com.pucminas.hospital.services;
 
 import br.com.pucminas.hospital.data.dto.PersonDTO;
 import br.com.pucminas.hospital.data.entity.Person;
-import br.com.pucminas.hospital.exception.ResourceNotFoundException;
+import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
 import br.com.pucminas.hospital.mapper.PersonMapper;
 import br.com.pucminas.hospital.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
