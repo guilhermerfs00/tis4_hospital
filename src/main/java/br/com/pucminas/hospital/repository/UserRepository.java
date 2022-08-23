@@ -2,6 +2,7 @@ package br.com.pucminas.hospital.repository;
 
 import br.com.pucminas.hospital.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.userName = :userName")
     User findByUsername(@Param("userName") String userName);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE User user set user.password =:password where user.userName =:userName")
+    void changePasswordByUsername(@Param("userName") String userName, @Param("password") String password);
 }

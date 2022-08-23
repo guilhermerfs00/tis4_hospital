@@ -32,6 +32,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PatchMapping(value = "/change-password/{username}")
+    public ResponseEntity changePassword(@PathVariable("username") String username, @RequestHeader("password") String password) {
+        userService.changePassword(username, password);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
     @PutMapping(value = "/refresh/{username}")
     public ResponseEntity<TokenDTO> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String authorization) {
         var response = authService.refreshToken(username, authorization);
