@@ -2,6 +2,8 @@ package br.com.pucminas.hospital.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,5 @@ public class UserDTO {
     @NonNull
     private String password;
 
+    private List<PermissionDTO> permission;
 }

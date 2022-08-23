@@ -95,10 +95,11 @@ public class JwtTokenProvider {
     public TokenDTO refreshToken(String refreshToken) {
         if (refreshToken.contains("Bearer ")) refreshToken = refreshToken.substring("Bearer ".length());
 
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = verifier.verify(refreshToken);
-        String username = decodedJWT.getSubject();
-        List<String> roles = decodedJWT.getClaim("roles").asList(String.class);
+        var verifier = JWT.require(algorithm).build();
+        var decodedJWT = verifier.verify(refreshToken);
+        var username = decodedJWT.getSubject();
+        var roles = decodedJWT.getClaim("roles").asList(String.class);
+
         return createAccessToken(username, roles);
     }
 }

@@ -1,5 +1,6 @@
 package br.com.pucminas.hospital.model.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
 @NoArgsConstructor
 @Getter
 @Setter
@@ -20,6 +22,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
     private Long idUser;
 
     @Column(name = "user_name", unique = true)
@@ -40,16 +43,16 @@ public class User implements UserDetails {
     @Column(name = "credentials_non_expired")
     private Boolean credentialsNonExpired;
 
-    @Column
+    @Column(name = "enabled")
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_permission", joinColumns = {@JoinColumn(name = "id_user")}, inverseJoinColumns = {@JoinColumn(name = "id_permission")})
-    private List<Permission> permissionEntities;
+    private List<Permission> permission;
 
     public List<String> getRoles() {
         List<String> roles = new ArrayList<>();
-        for (Permission permission : permissionEntities) {
+        for (Permission permission : permission) {
             roles.add(permission.getDescription());
         }
         return roles;
@@ -57,7 +60,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.permissionEntities;
+        return this.permission;
     }
 
     @Override
@@ -72,22 +75,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return true;
     }
 
 }

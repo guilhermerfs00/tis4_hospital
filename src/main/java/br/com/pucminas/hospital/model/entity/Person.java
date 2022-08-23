@@ -1,9 +1,11 @@
 package br.com.pucminas.hospital.model.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Table(name = "person")
 @Entity
@@ -11,11 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Person implements Serializable {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_person", nullable = false)
+    @Column(name = "id_person")
     private Long idPerson;
 
     @Column(name = "first_name", nullable = false, length = 80)

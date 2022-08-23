@@ -1,23 +1,23 @@
 package br.com.pucminas.hospital.model.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "permission")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Permission implements GrantedAuthority, Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Permission implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_permission")
+    private Long idPermission;
 
     @Column
     private String description;

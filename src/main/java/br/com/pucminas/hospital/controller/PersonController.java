@@ -21,8 +21,7 @@ public class PersonController {
     private PersonServices service;
 
     @GetMapping
-    public ResponseEntity<List<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page,
-                                                   @RequestParam(value = "limit", defaultValue = "12") int limit) {
+    public ResponseEntity<List<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         var personDTOList = service.findAll(page, limit);
         return new ResponseEntity<>(personDTOList, HttpStatus.OK);
     }

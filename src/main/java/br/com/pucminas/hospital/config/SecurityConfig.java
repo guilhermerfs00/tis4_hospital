@@ -30,7 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().antMatchers("/auth/signin", "/auth/refresh", "/api-docs/**", "/swagger-ui.html**").permitAll().antMatchers("/api/**").authenticated().antMatchers("/users").denyAll().and().cors().and().apply(new JwtConfigurer(tokenProvider));
+        http.httpBasic().disable().csrf().disable().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                .antMatchers("/auth/signin", "/auth/refresh", "/api-docs/**", "/swagger-ui.html**").permitAll()
+                .antMatchers("/api/**").authenticated()
+                .antMatchers("/users").denyAll().and().cors().and()
+                .apply(new JwtConfigurer(tokenProvider));
     }
 
     @Bean
