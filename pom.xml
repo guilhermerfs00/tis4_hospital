@@ -23,7 +23,7 @@
     </properties>
     <dependencies>
 
-        <!-- =================================== SPRING =================================== -->
+        <!-- =================================== SPRING / JAVA =================================== -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -47,36 +47,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>mysql</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -90,6 +64,7 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
+
         <!-- =================================== SQL =================================== -->
 
         <dependency>

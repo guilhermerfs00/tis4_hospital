@@ -28,6 +28,7 @@ public class AuthService {
         try {
             var username = data.getUsername();
             var password = data.getPassword();
+
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
             var user = repository.findByUsername(username);
@@ -46,8 +47,25 @@ public class AuthService {
 
     }
 
-    public boolean checkIfParamsIsNull(AccountCredentialsDTO data) {
-        return data == null || data.getUsername() == null || data.getUsername().isBlank() || data.getPassword() == null || data.getPassword().isBlank();
+    public ResponseEntity refreshToken(String username, String refreshToken) {
+        var user = repository.findByUsername(username);
+
+        var tokenResponse = new TokenDTO();
+        if (user != null) {
+            tokenResponse = tokenProvider.refreshToken(refreshToken);
+        } else {
+            throw new UsernameNotFoundException("Username " + username + " not found!");
+        }
+        return ResponseEntity.ok(tokenResponse);
     }
 
+    public boolean checkIfParamsIsNotNull(String username, String refreshToken) {
+        return refreshToken == null || refreshToken.isBlank() ||
+                username == null || username.isBlank();
+    }
+
+    public boolean checkIfParamsIsNotNull(AccountCredentialsDTO data) {
+        return data == null || data.getUsername() == null || data.getUsername().isBlank()
+                || data.getPassword() == null || data.getPassword().isBlank();
+    }
 }
