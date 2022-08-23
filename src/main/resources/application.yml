@@ -22,5 +22,6 @@ springdoc:
   pathsToMatch: 
     - /auth/** 
     - /api/**
+    - /permission/**
   swagger-ui:
     use-root-path: true

@@ -23,6 +23,6 @@ public class PersonController {
     @GetMapping
     public ResponseEntity<List<PersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         var personDTOList = service.findAll(page, limit);
-        return new ResponseEntity<>(personDTOList, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(personDTOList);
     }
 }

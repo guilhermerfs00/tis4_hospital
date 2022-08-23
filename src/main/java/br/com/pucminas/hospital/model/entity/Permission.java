@@ -1,17 +1,16 @@
 package br.com.pucminas.hospital.model.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "permission")
-@Data
+@Builder
 @NoArgsConstructor
-@EqualsAndHashCode
+@AllArgsConstructor
+@Data
 public class Permission implements GrantedAuthority {
 
     @Id
@@ -19,7 +18,7 @@ public class Permission implements GrantedAuthority {
     @Column(name = "id_permission")
     private Long idPermission;
 
-    @Column
+    @Column(name = "description", unique = true)
     private String description;
 
     @Override

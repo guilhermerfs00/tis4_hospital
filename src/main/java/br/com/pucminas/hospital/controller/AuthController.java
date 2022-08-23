@@ -35,7 +35,7 @@ public class AuthController {
     @PatchMapping(value = "/change-password/{username}")
     public ResponseEntity changePassword(@PathVariable("username") String username, @RequestHeader("password") String password) {
         userService.changePassword(username, password);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/refresh/{username}")
