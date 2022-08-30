@@ -6,6 +6,7 @@ import br.com.pucminas.hospital.model.dto.UserDTO;
 import br.com.pucminas.hospital.model.entity.User;
 import br.com.pucminas.hospital.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,7 +55,7 @@ public class UserService implements UserDetailsService {
 
     private void validateUserAlreadyRegistered(String username) {
         var user = repository.findByUsername(username);
-        if (!Objects.isNull(user)) throw new BusinesException("Usuário já cadastrado no sistema");
+        if (!Objects.isNull(user)) throw new BusinesException("Usuário já cadastrado no sistema", HttpStatus.NOT_FOUND);
     }
 
     private User userSecurityConfig(UserDTO userDTO) {

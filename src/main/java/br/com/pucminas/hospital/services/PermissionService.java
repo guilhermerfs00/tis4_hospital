@@ -6,6 +6,7 @@ import br.com.pucminas.hospital.model.dto.PermissionDTO;
 import br.com.pucminas.hospital.model.entity.Permission;
 import br.com.pucminas.hospital.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class PermissionService {
         try {
             return PermissionMapper.INSTANCE.entityToDto(repository.save(Permission.builder().description(description).build()));
         } catch (Exception e) {
-            throw new BusinesException("Permissão: " + description + " já cadastrada no sistema !");
+            throw new BusinesException("Permissão: " + description + " já cadastrada no sistema !", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -35,7 +36,7 @@ public class PermissionService {
 
         var permission = repository.findByDescription(description);
         if (Objects.isNull(permission)) {
-            throw new BusinesException("Permissão não encontrada");
+            throw new BusinesException("Permissão: " + description + " já cadastrada no sistema !", HttpStatus.BAD_REQUEST);
         }
         repository.deleteByDescription(description);
     }
