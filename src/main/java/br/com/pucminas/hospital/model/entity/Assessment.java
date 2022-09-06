@@ -1,6 +1,5 @@
 package br.com.pucminas.hospital.model.entity;
 
-import br.com.pucminas.hospital.model.enums.AssessmentNumberEnum;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,16 +22,10 @@ public class Assessment {
     private Long idAssessment;
 
     @Column(name = "assessment_number")
-    private AssessmentNumberEnum assessmentNumberEnum;
+    private String assessmentNumberEnum;
 
-    @Column(name = "first_try")
-    private LocalDate firstTry;
-
-    @Column(name = "second_try")
-    private LocalDate secondTry;
-
-    @Column(name = "final_try")
-    private LocalDate finalTry;
+    @Column(name = "call_day")
+    private LocalDate callDay;
 
     @Column(name = "is_contact_done")
     private Boolean isContactDone;

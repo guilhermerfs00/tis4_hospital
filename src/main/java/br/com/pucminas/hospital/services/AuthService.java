@@ -1,5 +1,6 @@
 package br.com.pucminas.hospital.services;
 
+import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
 import br.com.pucminas.hospital.model.dto.AccountCredentialsDTO;
 import br.com.pucminas.hospital.model.dto.TokenDTO;
 import br.com.pucminas.hospital.repository.UserRepository;
@@ -10,8 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class AuthService {
@@ -25,7 +24,7 @@ public class AuthService {
     @Autowired
     private UserRepository repository;
 
-    public TokenDTO signin(AccountCredentialsDTO accountCredentialsDTO) {
+    public TokenDTO signIn(AccountCredentialsDTO accountCredentialsDTO) {
         try {
             var username = accountCredentialsDTO.getUsername();
             var password = accountCredentialsDTO.getPassword();
@@ -34,9 +33,11 @@ public class AuthService {
 
             var user = repository.findByUsername(username);
 
-            if (Objects.isNull(user)) throw new UsernameNotFoundException("Usuário " + username + " não encontrado!");
+            if (!user.isPresent()) {
+                throw new UsernameNotFoundException("Usuário " + username + " não encontrado!");
+            }
 
-            return tokenProvider.createAccessToken(username, user.getRoles());
+            return tokenProvider.createAccessToken(username, user.get().getRoles());
 
         } catch (Exception e) {
             throw new BadCredentialsException("Usuário ou senha inválidos!");
@@ -45,9 +46,8 @@ public class AuthService {
 
     public TokenDTO refreshToken(String username, String refreshToken) {
         try {
-            var user = repository.findByUsername(username);
-
-            if (Objects.isNull(user)) throw new UsernameNotFoundException("Username " + username + " not found!");
+            repository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
 
             return tokenProvider.refreshToken(refreshToken);
 

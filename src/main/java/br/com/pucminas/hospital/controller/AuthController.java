@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping(value = "/signin")
     public ResponseEntity<TokenDTO> signin(@RequestBody AccountCredentialsDTO accountCredentialsDTO) {
-        var response = authService.signin(accountCredentialsDTO);
+        var response = authService.signIn(accountCredentialsDTO);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -35,6 +35,12 @@ public class AuthController {
     @PatchMapping(value = "/change-password/{username}")
     public ResponseEntity changePassword(@PathVariable("username") String username, @RequestHeader("password") String password) {
         userService.changePassword(username, password);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(value = "/inactivate-user/{username}")
+    public ResponseEntity inactivateUserByUsername(@PathVariable("username") String username) {
+        userService.inactivateUser(username);
         return ResponseEntity.ok().build();
     }
 

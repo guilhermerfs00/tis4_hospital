@@ -1,6 +1,7 @@
 package br.com.pucminas.hospital.services;
 
 import br.com.pucminas.hospital.exceptions.BusinesException;
+import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
 import br.com.pucminas.hospital.mapper.PermissionMapper;
 import br.com.pucminas.hospital.model.dto.PermissionDTO;
 import br.com.pucminas.hospital.model.entity.Permission;
@@ -19,7 +20,7 @@ public class PermissionService {
     @Autowired
     private PermissionRepository repository;
 
-    public PermissionDTO create(String description) {
+    public PermissionDTO createPermission(String description) {
         try {
             return PermissionMapper.INSTANCE.entityToDto(repository.save(Permission.builder().description(description).build()));
         } catch (Exception e) {
@@ -27,17 +28,19 @@ public class PermissionService {
         }
     }
 
-    public List<PermissionDTO> findAll() {
+    public List<PermissionDTO> findAllPermission() {
         var permissionList = repository.findAll();
         return permissionList.stream().map(PermissionMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }
 
     public void deleteByDescription(String description) {
+        var permission = repository.findByDescription(description)
+                .orElseThrow(() -> new ResourceNotFoundException());
 
-        var permission = repository.findByDescription(description);
         if (Objects.isNull(permission)) {
             throw new BusinesException("Permissão: " + description + " já cadastrada no sistema !", HttpStatus.BAD_REQUEST);
         }
+
         repository.deleteByDescription(description);
     }
 }

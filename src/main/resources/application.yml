@@ -23,5 +23,6 @@ springdoc:
     - /auth/** 
     - /api/**
     - /permission/**
+    - /statistic/**
   swagger-ui:
     use-root-path: true

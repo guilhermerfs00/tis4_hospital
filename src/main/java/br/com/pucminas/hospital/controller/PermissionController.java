@@ -18,17 +18,17 @@ public class PermissionController {
 
     @PostMapping(value = "/create/{description}")
     public ResponseEntity<PermissionDTO> createPermission(@RequestParam String description) {
-        var response = service.create(description);
+        var response = service.createPermission(description);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(value = "/findAll")
+    @GetMapping(value = "/find-all")
     public ResponseEntity<List<PermissionDTO>> findAll() {
-        var response = service.findAll();
+        var response = service.findAllPermission();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @DeleteMapping(value = "/deletar/{description}")
+    @DeleteMapping(value = "/delete/{description}")
     public ResponseEntity<Void> deletarUsuarioPorId(@RequestParam String description) {
         service.deleteByDescription(description);
         return ResponseEntity.ok().build();

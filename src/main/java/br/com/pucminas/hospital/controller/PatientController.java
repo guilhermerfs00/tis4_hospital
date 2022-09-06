@@ -19,9 +19,15 @@ public class PatientController {
 
     @GetMapping(value = "/find-all")
     public ResponseEntity<List<PatientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        var response = service.findAll(page, limit);
+        var response = service.findAllPatient(page, limit);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+//    @GetMapping(value = "/patient-filter")
+//    public ResponseEntity<PatientDTO> patientByFilter(@RequestParam MultiValueMap<String, String> requestParams) {
+//        var response = service.patientFilter(requestParams);
+//        return null;
+//    }
 
     @PostMapping(value = "/create-patient")
     public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO) {

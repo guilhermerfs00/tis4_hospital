@@ -6,10 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AssessmentNumberEnum {
 
-    PRIMEIRA(1),
-    SEGUNDA(2),
-    FINAL(3);
+    PRIMEIRA("PRIMEIRA"),
+    SEGUNDA("SEGUNDA"),
+    TERCEIRA("TERCEIRA");
 
     @Getter
-    private Integer value;
+    private String value;
 }

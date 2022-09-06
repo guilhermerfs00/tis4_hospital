@@ -1,7 +1,5 @@
 package br.com.pucminas.hospital.model.dto;
 
-import br.com.pucminas.hospital.model.enums.AssessmentNumberEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,21 +14,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AssessmentDTO {
 
-    @JsonIgnore
-    private Integer idAssessment;
+    private Long idAssessment;
 
-    @NotEmpty(message = "Numero da avaliação não pode ser nulo")
-    private AssessmentNumberEnum assessmentNumberEnum;
-
-    private LocalDate firstTry;
-
-    private LocalDate secondTry;
-
-    private LocalDate finalTry;
+    private LocalDate callDay;
 
     @NotEmpty(message = "Contato realizado não pode ser nulo")
     private Boolean isContactDone;
 
+    @NotEmpty(message = "Detalhes do sintomas não podem ser nulos")
     private String symptomsDetail;
 
     @NotEmpty(message = "Registro do paciente não pode ser nulo")
