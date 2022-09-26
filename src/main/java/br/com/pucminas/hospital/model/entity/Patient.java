@@ -19,8 +19,8 @@ import java.time.LocalDate;
 public class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_patient")
+    @GeneratedValue(generator = "patient_generator")
+    @SequenceGenerator(name = "patient_generator", sequenceName = "patient_sequence")
     private Long idPatient;
 
     @Column(name = "register", nullable = false, unique = true)

@@ -17,8 +17,8 @@ import java.time.LocalDate;
 public class Assessment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_assessment")
+    @GeneratedValue(generator = "assessment_generator")
+    @SequenceGenerator(name = "assessment_generator", sequenceName = "assessment_sequence")
     private Long idAssessment;
 
     @Column(name = "assessment_number")

@@ -14,8 +14,8 @@ import javax.persistence.*;
 public class Permission implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_permission")
+    @GeneratedValue(generator = "permission_generator")
+    @SequenceGenerator(name = "permission_generator", sequenceName = "permission_sequence")
     private Long idPermission;
 
     @Column(name = "description", unique = true)
