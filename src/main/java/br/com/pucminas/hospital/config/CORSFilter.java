@@ -13,7 +13,7 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CORSFilter implements Filter {
 
-    private static final String LOCAL = "http://localhost:8100"; // URL
+    private static final String LOCAL = "http://localhost:3000"; // URL
     private static final String REMOTO = "https://"; // OTHER URL
 
     @Override
