@@ -2,12 +2,14 @@ package br.com.pucminas.hospital.controller;
 
 
 import br.com.pucminas.hospital.model.dto.PatientDTO;
+import br.com.pucminas.hospital.model.enums.SurgeryPatientEnum;
 import br.com.pucminas.hospital.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -23,15 +25,14 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @GetMapping(value = "/patient-filter")
-//    public ResponseEntity<PatientDTO> patientByFilter(@RequestParam MultiValueMap<String, String> requestParams) {
-//        var response = service.patientFilter(requestParams);
-//        return null;
-//    }
-
     @PostMapping(value = "/create-patient")
     public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO) {
         var response = service.createPatient(patientDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping(value = "/get-surgery-types")
+    public ResponseEntity<List<SurgeryPatientEnum>> findSurgeryTypes() {
+        return ResponseEntity.status(HttpStatus.OK).body(Arrays.asList(SurgeryPatientEnum.values()));
     }
 }

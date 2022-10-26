@@ -65,6 +65,11 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    public UserDetails getUserDetailByToken(String token) {
+        DecodedJWT decodedJWT = decodedToken(token);
+        return this.userDetailsService.loadUserByUsername(decodedJWT.getSubject());
+    }
+
     private DecodedJWT decodedToken(String token) {
         Algorithm alg = Algorithm.HMAC256(secretKey.getBytes());
         JWTVerifier verifyer = JWT.require(alg).build();
@@ -101,5 +106,14 @@ public class JwtTokenProvider {
         var roles = decodedJWT.getClaim("roles").asList(String.class);
 
         return createAccessToken(username, roles);
+    }
+
+    public String getUserToken(String token) {
+        if (token.contains("Bearer ")) {
+            token = token.substring("Bearer ".length());
+        }
+
+        var verifier = JWT.require(algorithm).build();
+        return verifier.verify(token).getSubject();
     }
 }

@@ -17,12 +17,6 @@ public class AssessmentController {
     @Autowired
     private AssessmentService service;
 
-    @PostMapping(value = "/create-assessment-patient")
-    public ResponseEntity<AssessmentDTO> createAssessment(@RequestBody AssessmentDTO assessmentDTO) {
-        var response = service.createAssessment(assessmentDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping(value = "/find-assessment-by-register/{patientRegister}")
     public ResponseEntity<List<AssessmentDTO>> findAssessmentByRegister(@PathVariable String patientRegister) {
         var response = service.findAssessmentByRegister(patientRegister);

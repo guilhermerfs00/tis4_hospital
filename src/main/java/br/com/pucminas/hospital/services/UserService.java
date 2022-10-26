@@ -33,9 +33,11 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
+
         validateUserAlreadyRegistered(userDTO.getUserName());
 
-        userDTO.getPermission().stream().forEach(p -> permissionRepository.findByDescription(p.getDescription()).orElseThrow(() -> new ResourceNotFoundException("Permissão de usuário não encontrada")));
+        userDTO.getPermission().stream().forEach(p -> permissionRepository.findByDescription(p.getDescription())
+                .orElseThrow(() -> new ResourceNotFoundException("Permissão de usuário não encontrada")));
 
         var user = userSecurityConfig(userDTO);
 
@@ -58,8 +60,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
     }
-
-
 
     private User userSecurityConfig(UserDTO userDTO) {
         var user = UserMapper.INSTANCE.dtoToEntity(userDTO);
@@ -95,5 +95,12 @@ public class UserService implements UserDetailsService {
         if (user.isPresent()) {
             throw new BusinesException("Usuário já cadastrado no sistema", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public UserDTO getUserByUsername(String username) {
+
+        var user = repository.findByUsername(username).orElseThrow();
+
+        return UserMapper.INSTANCE.entityToDto(user);
     }
 }

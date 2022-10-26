@@ -1,18 +1,18 @@
 package br.com.pucminas.hospital.services;
 
-import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
 import br.com.pucminas.hospital.mapper.AssessmentMapper;
-import br.com.pucminas.hospital.mapper.PatientMapper;
 import br.com.pucminas.hospital.model.dto.AssessmentDTO;
+import br.com.pucminas.hospital.model.entity.Assessment;
+import br.com.pucminas.hospital.model.entity.Patient;
+import br.com.pucminas.hospital.model.enums.AssessmentNumberEnum;
 import br.com.pucminas.hospital.repository.AssessmentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-
-import static br.com.pucminas.hospital.model.enums.AssessmentNumberEnum.*;
 
 @Service
 @Slf4j
@@ -21,38 +21,46 @@ public class AssessmentService {
     @Autowired
     AssessmentRepository repository;
 
-    @Autowired
-    PatientService patientService;
+    private static final Integer SECOND_ASSESSMENT_TRY = 30;
+    private static final Integer THIRD_ASSESSMENT_TRY = 60;
 
-    public AssessmentDTO createAssessment(AssessmentDTO assessmentDTO) {
-        var patientDTO = patientService.findPatientByRegister(assessmentDTO.getPatientRegister());
+    public void createPatientAssessment(Patient patient) {
 
-        var assessment = AssessmentMapper.INSTANCE.dtoToEntity(assessmentDTO);
+        List<Assessment> assessments = new ArrayList<>();
 
-        assessment.setCallDay(LocalDate.now());
-        assessment.setAssessmentNumberEnum(discoverAssessmentNumber(assessmentDTO.getPatientRegister()));
-        assessment.setPatient(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
+        Assessment firstAssessment = new Assessment();
+        firstAssessment.setCallDay(LocalDate.now());
+        firstAssessment.setPatient(patient);
+        firstAssessment.setIsContactDone(false);
+        firstAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.PRIMEIRA.getValue());
+        firstAssessment.setSymptomsDetail("");
 
-        return AssessmentMapper.INSTANCE.entityToDto(repository.save(assessment));
+
+        Assessment secondAssessment = new Assessment();
+        secondAssessment.setCallDay(LocalDate.now().plusDays(SECOND_ASSESSMENT_TRY));
+        secondAssessment.setPatient(patient);
+        secondAssessment.setIsContactDone(false);
+        firstAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.SEGUNDA.getValue());
+        secondAssessment.setSymptomsDetail("");
+
+        Assessment thirdAssessment = new Assessment();
+        thirdAssessment.setCallDay(LocalDate.now().plusDays(THIRD_ASSESSMENT_TRY));
+        thirdAssessment.setPatient(patient);
+        thirdAssessment.setIsContactDone(false);
+        firstAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.TERCEIRA.getValue());
+        thirdAssessment.setSymptomsDetail("");
+
+        assessments.add(firstAssessment);
+        assessments.add(secondAssessment);
+        assessments.add(thirdAssessment);
+
+        repository.saveAll(assessments);
     }
 
     public List<AssessmentDTO> findAssessmentByRegister(String patientRegister) {
-        var assessment = repository.findAssessmentByRegister(patientRegister)
-                .orElseThrow(() -> new ResourceNotFoundException());
+        var assessment = repository.findAssessmentByRegister(patientRegister).get();
 
         return AssessmentMapper.INSTANCE.entityToDto(assessment);
     }
 
-    public String discoverAssessmentNumber(String patientRegister) {
-        switch ((int) repository.findAssessmentByRegister(patientRegister).get().stream().count()) {
-            case 0:
-                return PRIMEIRA.getValue();
-            case 1:
-                return SEGUNDA.getValue();
-            case 2:
-                return TERCEIRA.getValue();
-            default:
-                throw new IllegalArgumentException("Erro ao buscar o numero da avaliação");
-        }
-    }
 }

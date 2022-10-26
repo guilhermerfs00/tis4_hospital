@@ -23,7 +23,7 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
 
     @Query("SELECT a FROM Assessment a WHERE a.callDay BETWEEN :startDate AND :finalDate")
     List<Assessment> teste1(@Param("startDate") LocalDate startDate,
-                                              @Param("finalDate") LocalDate finalDate);
+                            @Param("finalDate") LocalDate finalDate);
 
     @Query(value = "SELECT stock_akhir.product_id AS productId, stock_akhir.product_code AS productCode, SUM(stock_akhir.qty) as stockAkhir "
             + "FROM book_stock stock_akhir "

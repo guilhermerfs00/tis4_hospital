@@ -17,6 +17,10 @@ public class PatientService {
     @Autowired
     PatientRepository repository;
 
+    @Autowired
+    AssessmentService assessmentService;
+
+
     public List<PatientDTO> findAllPatient(int page, int limit) {
         var pageable = PageRequest.of(page, limit);
         var pagePatient = repository.findAll(pageable);
@@ -31,7 +35,11 @@ public class PatientService {
     }
 
     public PatientDTO createPatient(PatientDTO patientDTO) {
+
         var patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
+
+        assessmentService.createPatientAssessment(patient);
+
         return PatientMapper.INSTANCE.entityToDto(patient);
     }
 

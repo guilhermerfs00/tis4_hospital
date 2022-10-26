@@ -21,11 +21,9 @@ public class StatisticController {
 
     @GetMapping(value = "/get-statistic-by-assessment/{page}/{limit}")
     public ResponseEntity<StatisticDTO> getStatisticByAssessment(@RequestBody ParamsStatisticDTO paramsStatisticDTO,
-                                                         @RequestParam(value = "page", defaultValue = "0") int page,
-                                                         @RequestParam(value = "limit", defaultValue = "12") int limit) {
+                                                                 @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                 @RequestParam(value = "limit", defaultValue = "12") int limit) {
         var response = service.getStatisticByAssessment(paramsStatisticDTO, page, limit);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
-
-
