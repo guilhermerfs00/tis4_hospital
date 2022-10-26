@@ -18,7 +18,13 @@ public class UserController {
 
     @GetMapping(value = "/getAll")
     public ResponseEntity<List<UserDTO>> getAllUserByUsername(@RequestHeader("Authorization") String authorization) {
-        var user = userTokenService.getAllUsersByToken(authorization);
+        var user = userTokenService.findAllUsersByToken(authorization);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @GetMapping(value = "/find-username-by-token")
+    public ResponseEntity<UserDTO> findUserByUsername(@RequestHeader("Authorization") String authorization) {
+        var user = userTokenService.findUserByUsername(authorization);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 

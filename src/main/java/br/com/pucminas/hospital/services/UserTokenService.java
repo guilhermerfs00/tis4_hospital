@@ -25,12 +25,21 @@ public class UserTokenService {
 
     PasswordEncoder passwordEncoder;
 
-    public List<UserDTO> getAllUsersByToken(String token) {
+    public List<UserDTO> findAllUsersByToken(String token) {
 
         var userName = jwtTokenProvider.getUserToken(token);
         var users = userRepository.findAllUserDiferentByUsername(userName);
 
         return UserMapper.INSTANCE.entityToDto(users);
+    }
+
+    public UserDTO findUserByUsername(String token) {
+        var username = jwtTokenProvider.getUserToken(token);
+
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
+
+        return UserMapper.INSTANCE.entityToDto(user);
     }
 
     @Transactional
@@ -41,11 +50,14 @@ public class UserTokenService {
 
         user.setUserName(userDTO.getUserName());
         user.setFullName(userDTO.getFullName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setPermission(userDTO.getPermission().stream().map(permissionDTO
-                -> PermissionMapper.INSTANCE.dtoToEntity(permissionDTO)).collect(Collectors.toList()));
+        var permission = userDTO.getPermission().stream().map(permissionDTO
+                -> PermissionMapper.INSTANCE.dtoToEntity(permissionDTO)).collect(Collectors.toList());
 
-        return UserMapper.INSTANCE.entityToDto(userRepository.save(user));
+        user.setPermission(permission);
+
+        var u = userRepository.save(user);
+
+        return UserMapper.INSTANCE.entityToDto(u);
     }
 }

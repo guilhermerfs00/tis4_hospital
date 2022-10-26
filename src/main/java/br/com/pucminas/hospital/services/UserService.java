@@ -96,11 +96,4 @@ public class UserService implements UserDetailsService {
             throw new BusinesException("Usuário já cadastrado no sistema", HttpStatus.BAD_REQUEST);
         }
     }
-
-    public UserDTO getUserByUsername(String username) {
-
-        var user = repository.findByUsername(username).orElseThrow();
-
-        return UserMapper.INSTANCE.entityToDto(user);
-    }
 }
