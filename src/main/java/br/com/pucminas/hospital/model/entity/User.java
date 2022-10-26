@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import javax.validation.constraints.Email;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "email")
+    @Email
+    private String email;
+    
     @Column(name = "password")
     private String password;
 
@@ -45,6 +50,9 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @Column(name = "recovery_token")
+    private String recoveryToken;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_permission", joinColumns = {@JoinColumn(name = "id_user")}, inverseJoinColumns = {@JoinColumn(name = "id_permission")})

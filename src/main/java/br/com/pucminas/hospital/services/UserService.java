@@ -32,6 +32,29 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = new Pbkdf2PasswordEncoder();
     }
 
+    public void setRecoveryToken(String recoveryToken, String username){
+        var user = repository.findByUsername(username)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        user.setRecoveryToken(recoveryToken);
+        repository.save(user);
+    }
+
+    public Boolean validateRecoveryToken(String recoveryToken, String username){
+        var user = repository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        if (user.getRecoveryToken().equals(recoveryToken)){
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    public UserDTO getUserByUsername(String username) {
+
+        var user = repository.findByUsername(username).orElseThrow();
+
+        return UserMapper.INSTANCE.entityToDto(user);
+    }
+    
     public UserDTO createUser(UserDTO userDTO) {
 
         validateUserAlreadyRegistered(userDTO.getUserName());
