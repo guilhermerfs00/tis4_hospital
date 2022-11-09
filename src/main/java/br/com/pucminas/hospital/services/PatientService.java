@@ -1,11 +1,13 @@
 package br.com.pucminas.hospital.services;
 
+import br.com.pucminas.hospital.exceptions.BusinesException;
 import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
 import br.com.pucminas.hospital.mapper.PatientMapper;
 import br.com.pucminas.hospital.model.dto.PatientDTO;
 import br.com.pucminas.hospital.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -52,25 +54,26 @@ public class PatientService {
         return PatientMapper.INSTANCE.entityToDto(patient);
     }
 
-    public PatientDTO updatePatient(String register, PatientDTO patientDTO) {
-        var optionalPatient = repository.findByRegister(register).orElseThrow(() -> new ResourceNotFoundException());
+    public PatientDTO updatePatient(PatientDTO patientDTO, String authorization) {
+        try {
+            var patient = repository.findByRegister(patientDTO.getRegister())
+                    .orElseThrow(() -> new ResourceNotFoundException());
 
-        patientDTO.setIdPatient(optionalPatient.getIdPatient());
+            patient.setSex(patientDTO.getSex());
+            patient.setRegister(patientDTO.getRegister());
+            patient.setName(patient.getName());
+            patient.setLastModified(LocalDate.now());
+            patient.setCreatedBy(userTokenService.findUserByToken(authorization).getFullName());
+            patient.setSurgeryPatientEnum(patientDTO.getSurgeryPatientEnum());
+            patient.setIsNhsnSurgery(patientDTO.getIsNhsnSurgery());
+            patient.setPhoneNumber(patientDTO.getPhoneNumber());
+            patient.setSurgeryDate(patientDTO.getSurgeryDate());
 
-        var patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
+            patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
 
-        return PatientMapper.INSTANCE.entityToDto(patient);
+            return PatientMapper.INSTANCE.entityToDto(patient);
+        } catch (Exception e) {
+            throw new BusinesException("Erro ao atualizar usuario: " + e.getMessage(), HttpStatus.BAD_REQUEST)
+        }
     }
-
-//    public PatientDTO patientFilter(MultiValueMap<String, String> requestParams) {
-//
-//       var iterator = requestParams.entrySet().iterator();
-//
-//        while(iterator.hasNext()) {
-//            var i = iterator.next().getKey();
-//            var values = iterator.next().getValue();
-//        }
-//
-//        return null;
-//    }
 }
