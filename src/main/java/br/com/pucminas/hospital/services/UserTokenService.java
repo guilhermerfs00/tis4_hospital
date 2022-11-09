@@ -33,7 +33,7 @@ public class UserTokenService {
         return UserMapper.INSTANCE.entityToDto(users);
     }
 
-    public UserDTO findUserByUsername(String token) {
+    public UserDTO findUserByToken(String token) {
         var username = jwtTokenProvider.getUserToken(token);
 
         var user = userRepository.findByUsername(username)

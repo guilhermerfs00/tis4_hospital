@@ -40,4 +40,8 @@ public class PatientDTO {
 
     @NotEmpty(message = "NHSN não pode ser nula")
     private Boolean isNhsnSurgery;
+
+    private String createdBy;
+
+    private LocalDate lastModified = LocalDate.now();
 }

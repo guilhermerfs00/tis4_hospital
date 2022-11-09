@@ -44,4 +44,10 @@ public class Patient {
     @Column(name = "is_nhsn_surgery", nullable = false)
     private Boolean isNhsnSurgery;
 
+    @Column(name = "create_by")
+    private String createdBy;
+
+    @Column(name = "last_modified")
+    private LocalDate lastModified = LocalDate.now();
+
 }

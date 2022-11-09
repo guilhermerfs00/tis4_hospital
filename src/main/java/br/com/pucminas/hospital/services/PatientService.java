@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,9 @@ public class PatientService {
 
     @Autowired
     AssessmentService assessmentService;
+
+    @Autowired
+    UserTokenService userTokenService;
 
 
     public List<PatientDTO> findAllPatient(int page, int limit) {
@@ -34,7 +38,12 @@ public class PatientService {
         return PatientMapper.INSTANCE.entityToDto(optPatient);
     }
 
-    public PatientDTO createPatient(PatientDTO patientDTO) {
+    public PatientDTO createPatient(PatientDTO patientDTO, String authorization) {
+
+        var userName = userTokenService.findUserByToken(authorization).getFullName();
+
+        patientDTO.setCreatedBy(userName);
+        patientDTO.setLastModified(LocalDate.now());
 
         var patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
 

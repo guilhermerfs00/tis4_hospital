@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping(value = "/find-username-by-token")
     public ResponseEntity<UserDTO> findUserByUsername(@RequestHeader("Authorization") String authorization) {
-        var user = userTokenService.findUserByUsername(authorization);
+        var user = userTokenService.findUserByToken(authorization);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
