@@ -73,7 +73,7 @@ public class PatientService {
 
             return PatientMapper.INSTANCE.entityToDto(patient);
         } catch (Exception e) {
-            throw new BusinesException("Erro ao atualizar usuario: " + e.getMessage(), HttpStatus.BAD_REQUEST)
+            throw new BusinesException("Erro ao atualizar usuario: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
