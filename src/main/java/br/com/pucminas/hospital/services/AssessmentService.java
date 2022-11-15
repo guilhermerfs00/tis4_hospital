@@ -56,6 +56,9 @@ public class AssessmentService {
 
         repository.saveAll(assessments);
     }
+    public List<Assessment> findDailyAssessment() {
+        return repository.findAllDailyAssessment();
+    }
 
     public List<AssessmentDTO> findAssessmentByRegister(String patientRegister) {
         var assessment = repository.findAssessmentByRegister(patientRegister).get();

@@ -14,6 +14,10 @@ import java.util.Set;
 
 @Repository
 public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
+
+    @Query("SELECT a FROM Assessment a WHERE a.callDay = CURRENT_DATE")
+    List<Assessment> findAllDailyAssessment();
+
     @Query("SELECT a FROM Assessment a WHERE a.patient.register = :register")
     Optional<List<Assessment>> findAssessmentByRegister(@Param("register") String register);
 
