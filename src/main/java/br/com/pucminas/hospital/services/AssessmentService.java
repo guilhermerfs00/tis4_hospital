@@ -1,7 +1,9 @@
 package br.com.pucminas.hospital.services;
 
+import br.com.pucminas.hospital.exceptions.BusinesException;
 import br.com.pucminas.hospital.mapper.AssessmentMapper;
 import br.com.pucminas.hospital.model.dto.AssessmentDTO;
+import br.com.pucminas.hospital.model.dto.AssessmentDetailsDTO;
 import br.com.pucminas.hospital.model.entity.Assessment;
 import br.com.pucminas.hospital.model.entity.Patient;
 import br.com.pucminas.hospital.model.enums.AssessmentNumberEnum;
@@ -56,14 +58,24 @@ public class AssessmentService {
 
         repository.saveAll(assessments);
     }
+
     public List<Assessment> findDailyAssessment() {
         return repository.findAllDailyAssessment();
     }
 
     public List<AssessmentDTO> findAssessmentByRegister(String patientRegister) {
         var assessment = repository.findAssessmentByRegister(patientRegister).get();
-
         return AssessmentMapper.INSTANCE.entityToDto(assessment);
     }
 
+    public AssessmentDTO updateAssessment(Long idPatient, AssessmentDetailsDTO assessmentDetailsDTO) {
+
+        var assessment = repository.findById(idPatient)
+                .orElseThrow(() -> new BusinesException("Nenhum paciente encontrado com esse id"));
+
+        assessment.setIsContactDone(assessmentDetailsDTO.getIsContactDone());
+        assessment.setSymptomsDetail(assessmentDetailsDTO.getSymptomsDetail());
+
+        return AssessmentMapper.INSTANCE.entityToDto(assessment);
+    }
 }

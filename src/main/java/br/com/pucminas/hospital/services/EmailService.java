@@ -3,15 +3,11 @@ package br.com.pucminas.hospital.services;
 import br.com.pucminas.hospital.model.dto.EmailDto;
 import br.com.pucminas.hospital.model.dto.UserDTO;
 import br.com.pucminas.hospital.model.entity.Email;
-import br.com.pucminas.hospital.model.entity.User;
 import br.com.pucminas.hospital.model.enums.StatusEmail;
 import br.com.pucminas.hospital.repository.EmailRepository;
-import br.com.pucminas.hospital.security.JwtTokenProvider;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -37,7 +33,6 @@ public class EmailService {
 
     @Autowired
     UserTokenService userTokenService;
-
 
     public EmailDto sendPasswordRecoveryEmail(String username) {
         UserDTO userDto = userService.getUserByUsername(username);

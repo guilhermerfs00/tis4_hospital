@@ -29,9 +29,6 @@ public class AuthController {
     @PostMapping(value = "/create")
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
         var response = userService.createUser(userDTO);
-
-        //TOODO: CRIAR UM PARAMETRO IsAdm, ao ives de passar as permissoes
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

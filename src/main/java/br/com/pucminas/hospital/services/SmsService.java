@@ -51,7 +51,8 @@ public class SmsService {
                 sendSms(SmsRequest.builder()
                         .phoneNumber(a.getPatient().getPhoneNumber())
                         .message("Ainda precisa criar a mensagem")
-                        .build()));
+                        .build())
+        );
     }
 
 }
