@@ -1,6 +1,6 @@
 package br.com.pucminas.hospital.model.dto;
 
-import br.com.pucminas.hospital.model.enums.SexEnum;
+import br.com.pucminas.hospital.model.enums.GenderEnum;
 import br.com.pucminas.hospital.model.enums.SurgeryPatientEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class PatientDTO {
     private String name;
 
     @NotEmpty(message = "Sexo não pode ser nulo")
-    private SexEnum sex;
+    private GenderEnum genderEnum;
 
     @NotEmpty(message = "Númenro de telefone não pode ser nulo")
     private String phoneNumber;

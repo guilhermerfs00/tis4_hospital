@@ -1,6 +1,6 @@
 package br.com.pucminas.hospital.model.entity;
 
-import br.com.pucminas.hospital.model.enums.SexEnum;
+import br.com.pucminas.hospital.model.enums.GenderEnum;
 import br.com.pucminas.hospital.model.enums.SurgeryPatientEnum;
 import lombok.Data;
 import lombok.Getter;
@@ -29,8 +29,8 @@ public class Patient {
     @Column(name = "name", nullable = false, length = 80)
     private String name;
 
-    @Column(name = "sex", nullable = false, length = 80)
-    private SexEnum sex;
+    @Column(name = "gender", nullable = false, length = 80)
+    private GenderEnum genderEnum;
 
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;

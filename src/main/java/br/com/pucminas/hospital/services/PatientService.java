@@ -59,7 +59,7 @@ public class PatientService {
             var patient = repository.findByRegister(patientDTO.getRegister())
                     .orElseThrow(() -> new ResourceNotFoundException());
 
-            patient.setSex(patientDTO.getSex());
+            patient.setGenderEnum(patientDTO.getGenderEnum());
             patient.setRegister(patientDTO.getRegister());
             patient.setName(patient.getName());
             patient.setLastModified(LocalDate.now());
