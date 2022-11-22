@@ -13,8 +13,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT u FROM User u WHERE u.userName = :userName")
-    Optional<User> findByUsername(@Param("userName") String userName);
+    Optional<User> findByUserName(String userName);
 
     @Query("SELECT u FROM User u WHERE u.userName != :userName")
     List<User> findAllUserDiferentByUsername(@Param("userName") String userName);
@@ -22,4 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE User user set user.password =:password where user.userName =:userName")
     void changePasswordByUsername(@Param("userName") String userName, @Param("password") String password);
+
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByRecoveryToken(String recoveryToken);
 }

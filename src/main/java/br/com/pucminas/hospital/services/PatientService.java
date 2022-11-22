@@ -47,6 +47,8 @@ public class PatientService {
         patientDTO.setCreatedBy(userName);
         patientDTO.setLastModified(LocalDate.now());
 
+        System.out.println(patientDTO.toString());
+
         var patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
 
         assessmentService.createPatientAssessment(patient);

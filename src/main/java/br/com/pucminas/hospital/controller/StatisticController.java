@@ -26,4 +26,5 @@ public class StatisticController {
         var response = service.getStatisticByAssessment(paramsStatisticDTO, page, limit);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 }

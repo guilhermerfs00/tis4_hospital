@@ -3,12 +3,15 @@ package br.com.pucminas.hospital.controller;
 import br.com.pucminas.hospital.model.dto.AccountCredentialsDTO;
 import br.com.pucminas.hospital.model.dto.TokenDTO;
 import br.com.pucminas.hospital.model.dto.UserDTO;
+import br.com.pucminas.hospital.model.request.CreateUser;
 import br.com.pucminas.hospital.services.AuthService;
 import br.com.pucminas.hospital.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,14 +30,15 @@ public class AuthController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> create(@RequestBody CreateUser userDTO) {
         var response = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping(value = "/change-password/{username}")
-    public ResponseEntity changePassword(@PathVariable("username") String username, @RequestHeader("password") String password) {
-        userService.changePassword(username, password);
+    @Transactional
+    @PatchMapping(value = "/change-password/{recoveryToken}")
+    public ResponseEntity changePassword(@PathVariable("recoveryToken") String recoveryToken, @RequestHeader("password") String password) {
+        userService.changePasswordByToken(recoveryToken, password);
         return ResponseEntity.ok().build();
     }
 

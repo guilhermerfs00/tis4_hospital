@@ -31,7 +31,7 @@ public class AuthService {
 
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-            var user = repository.findByUsername(username);
+            var user = repository.findByUserName(username);
 
             if (!user.isPresent()) {
                 throw new UsernameNotFoundException("Usuário " + username + " não encontrado!");
@@ -46,7 +46,7 @@ public class AuthService {
 
     public TokenDTO refreshToken(String username, String refreshToken) {
         try {
-            repository.findByUsername(username)
+            repository.findByUserName(username)
                     .orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
 
             return tokenProvider.refreshToken(refreshToken);

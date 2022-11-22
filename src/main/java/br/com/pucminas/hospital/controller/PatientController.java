@@ -19,6 +19,13 @@ public class PatientController {
     @Autowired
     private PatientService service;
 
+    @GetMapping(value = "/find/{register}")
+    public ResponseEntity<PatientDTO> find(@PathVariable(value="register") String register) {
+        var response = service.findPatientByRegister(register);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @GetMapping(value = "/find-all")
     public ResponseEntity<List<PatientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
         var response = service.findAllPatient(page, limit);

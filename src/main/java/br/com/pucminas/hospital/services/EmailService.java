@@ -39,7 +39,7 @@ public class EmailService {
         String subject = "[HSFA] Change userDto password";
         String recoveryToken = DigestUtils.sha256Hex(userDto.getUserName() + userDto.getEmail() + LocalDateTime.now());
         userService.setRecoveryToken(recoveryToken, username);
-        String text = "recovery link: https://api-busca-fonada.herokuapp.com/token?=" + recoveryToken;
+        String text = "recovery link: https://api-busca-fonada.herokuapp.com/change-password/recoveryToken?=" + recoveryToken;
         EmailDto emailDto = new EmailDto(username, this.emailFrom, userDto.getEmail(), subject, text);
         Email email = new Email(emailDto);
         this.sendEmail(email);

@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+import br.com.pucminas.hospital.model.request.CreateUser;
+
 import java.util.List;
 
 @Data
@@ -11,6 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+
+    public static UserDTO getFromCreateUserData(CreateUser data) {
+        UserDTO dto = new UserDTO();
+
+        dto.setEmail(data.getEmail());
+        dto.setUserName(data.getUserName());
+        dto.setFullName(data.getFullName());
+        dto.setPassword(data.getPassword());
+
+        return dto;
+    }
 
     private Long idUser;
 

@@ -1,5 +1,7 @@
 package br.com.pucminas.hospital.model.entity;
 
+import br.com.pucminas.hospital.model.enums.AssesmentCancelReasonEnum;
+import br.com.pucminas.hospital.model.enums.AssesmentStatusEnum;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +38,12 @@ public class Assessment {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @Column(name="status")
+    private AssesmentStatusEnum status;
+
+    @Column(name="cancel_reason")
+    private AssesmentCancelReasonEnum cancelReason;
+
+
 }

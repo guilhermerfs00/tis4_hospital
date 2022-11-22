@@ -21,7 +21,9 @@ public class StatisticService {
         var pageable = PageRequest.of(page, limit);
         var pagePatient = repository.getStatisticByAssessment(paramsStatisticDTO.getInitialDate(), paramsStatisticDTO.getFinalDate());
 
-//        var a = pagePatient.stream().filter(assessment -> {}).count();
+        //var a = pagePatient.stream().filter(assessment -> {}).count();
         return null;
     }
+
+
 }

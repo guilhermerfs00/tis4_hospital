@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping(value = "/getAll")
     public ResponseEntity<List<UserDTO>> getAllUserByUsername(@RequestHeader("Authorization") String authorization) {
         var user = userTokenService.findAllUsersByToken(authorization);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @GetMapping(value = "/find-username-by-token")

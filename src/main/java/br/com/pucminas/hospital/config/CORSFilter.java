@@ -21,15 +21,17 @@ public class CORSFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
 
-        if (LOCAL.equals(request.getHeader("Origin"))) {
+        String origin = request.getHeader("Origin");
+
+        if (LOCAL.equals(origin)) {
             response.setHeader("Access-Control-Allow-Origin", LOCAL);
-        } else if (REMOTO.equals(request.getHeader("Origin"))) {
+        } else if (REMOTO.equals(origin)) {
             response.setHeader("Access-Control-Allow-Origin", REMOTO);
         }
 
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Auth-Token, Content-Type, email, senha");
+        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Auth-Token, Content-Type, Authorization, email, senha");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
         if (!"OPTIONS".equalsIgnoreCase(request.getMethod())) {

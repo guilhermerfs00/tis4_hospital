@@ -36,7 +36,7 @@ public class UserTokenService {
     public UserDTO findUserByToken(String token) {
         var username = jwtTokenProvider.getUserToken(token);
 
-        var user = userRepository.findByUsername(username)
+        var user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
 
         return UserMapper.INSTANCE.entityToDto(user);
@@ -45,7 +45,7 @@ public class UserTokenService {
     @Transactional
     public UserDTO updateUser(String token, UserDTO userDTO) {
         var username = jwtTokenProvider.getUserToken(token);
-        var user = userRepository.findByUsername(username)
+        var user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
 
         user.setUserName(userDTO.getUserName());

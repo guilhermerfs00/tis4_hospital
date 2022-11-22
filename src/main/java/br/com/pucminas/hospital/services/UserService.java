@@ -2,9 +2,13 @@ package br.com.pucminas.hospital.services;
 
 import br.com.pucminas.hospital.exceptions.BusinesException;
 import br.com.pucminas.hospital.exceptions.ResourceNotFoundException;
+import br.com.pucminas.hospital.mapper.PermissionMapper;
 import br.com.pucminas.hospital.mapper.UserMapper;
+import br.com.pucminas.hospital.model.dto.PermissionDTO;
 import br.com.pucminas.hospital.model.dto.UserDTO;
+import br.com.pucminas.hospital.model.entity.Permission;
 import br.com.pucminas.hospital.model.entity.User;
+import br.com.pucminas.hospital.model.request.CreateUser;
 import br.com.pucminas.hospital.repository.PermissionRepository;
 import br.com.pucminas.hospital.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,9 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -33,14 +40,14 @@ public class UserService implements UserDetailsService {
     }
 
     public void setRecoveryToken(String recoveryToken, String username){
-        var user = repository.findByUsername(username)
+        var user = repository.findByUserName(username)
                         .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         user.setRecoveryToken(recoveryToken);
         repository.save(user);
     }
 
     public Boolean validateRecoveryToken(String recoveryToken, String username){
-        var user = repository.findByUsername(username)
+        var user = repository.findByUserName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         if (user.getRecoveryToken().equals(recoveryToken)){
             return Boolean.TRUE;
@@ -50,27 +57,36 @@ public class UserService implements UserDetailsService {
 
     public UserDTO getUserByUsername(String username) {
 
-        var user = repository.findByUsername(username).orElseThrow();
+        var user = repository.findByUserName(username).orElseThrow();
 
         return UserMapper.INSTANCE.entityToDto(user);
     }
     
-    public UserDTO createUser(UserDTO userDTO) {
+    public UserDTO createUser(CreateUser createUserData) {
 
-        validateUserAlreadyRegistered(userDTO.getUserName());
+        validateUserAlreadyRegistered(createUserData.getUserName());
 
-        userDTO.getPermission().stream().forEach(p -> permissionRepository.findByDescription(p.getDescription())
-                .orElseThrow(() -> new ResourceNotFoundException("Permissão de usuário não encontrada")));
+        UserDTO userDTO = UserDTO.getFromCreateUserData(createUserData);
 
-        var user = userSecurityConfig(userDTO);
+        String description = createUserData.getIsAdmin() ? "ADMIN" : "USER";
 
-        user.setUserName(userDTO.getUserName());
+        Permission permissionEntity = permissionRepository.findByDescription(description).orElseThrow(() -> new ResourceNotFoundException("Permissão de usuário não encontrada"));
 
-        var userResult = UserMapper.INSTANCE.entityToDto(repository.save(user));
+        User user = userSecurityConfig(userDTO);
 
-        userResult.setUserName(userDTO.getUserName());
+        user.setUserName(createUserData.getUserName());
 
-        return userResult;
+        user.setPermission(List.of(permissionEntity));
+
+        User userEntity = repository.save(user);
+
+        userDTO.setIdUser(userEntity.getIdUser());
+
+        PermissionDTO permissionDTO = PermissionMapper.INSTANCE.entityToDto(permissionEntity);
+
+        userDTO.setPermission(List.of(permissionDTO));
+
+        return userDTO;
     }
 
     @Transactional
@@ -81,7 +97,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
+        return repository.findByUserName(username).orElseThrow(() -> new ResourceNotFoundException("Username " + username + " não encontrado!"));
     }
 
     private User userSecurityConfig(UserDTO userDTO) {
@@ -103,7 +119,7 @@ public class UserService implements UserDetailsService {
     }
 
     private User findUnregisteredUserByUsername(String username) {
-        var user = repository.findByUsername(username);
+        var user = repository.findByUserName(username);
 
         if (user.isPresent()) {
             throw new BusinesException("Usuário já cadastrado no sistema", HttpStatus.BAD_REQUEST);
@@ -113,10 +129,24 @@ public class UserService implements UserDetailsService {
     }
 
     private void validateUserAlreadyRegistered(String username) {
-        var user = repository.findByUsername(username);
+        var user = repository.findByUserName(username);
 
         if (user.isPresent()) {
             throw new BusinesException("Usuário já cadastrado no sistema", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public User getUserByRecoveryToken(String recoveryToken) {
+        Optional<User> user = repository.findByRecoveryToken(recoveryToken);
+        if(user.isEmpty()){
+            throw new BusinesException("Recovery Token inválido", HttpStatus.BAD_REQUEST);
+        }
+        return user.get();
+    }
+
+    public UserDTO changePasswordByToken(String token, String password) {
+        User user = getUserByRecoveryToken(token);
+        changePassword(user.getUsername(), password);
+        return UserMapper.INSTANCE.entityToDto(user);
     }
 }

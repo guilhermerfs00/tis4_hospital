@@ -21,7 +21,7 @@ public class SmsService {
 
     public void sendSms(SmsRequest smsRequest) {
 
-        if (isPhoneNumberValid(smsRequest.getPhoneNumber())) {
+        //if (isPhoneNumberValid(smsRequest.getPhoneNumber())) {
 
             var phoneNumber = "+55" + smsRequest.getPhoneNumber();
 
@@ -32,9 +32,9 @@ public class SmsService {
             var messageCreator = Message.creator(to, from, message);
 
             messageCreator.create();
-        } else {
-            throw new BusinesException("Numero de celular [" + smsRequest.getPhoneNumber() + "] invalido");
-        }
+//        } else {
+//            throw new BusinesException("Numero de celular [" + smsRequest.getPhoneNumber() + "] invalido");
+//        }
     }
 
 
