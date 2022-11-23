@@ -33,8 +33,7 @@ public class PatientController {
     }
 
     @PostMapping(value = "/create-patient")
-    public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO,
-                                                    @RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO, @RequestHeader("Authorization") String authorization) {
         var response = service.createPatient(patientDTO, authorization);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

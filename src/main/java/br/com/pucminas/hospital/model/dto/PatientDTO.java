@@ -26,8 +26,7 @@ public class PatientDTO {
     @NotEmpty(message = "Nome não pode ser nulo")
     private String name;
 
-    @NotEmpty(message = "Sexo não pode ser nulo")
-    private GenderEnum genderEnum;
+    private String genderEnum;
 
     @NotEmpty(message = "Númenro de telefone não pode ser nulo")
     private String phoneNumber;

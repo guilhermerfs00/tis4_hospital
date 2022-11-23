@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.com.pucminas.hospital.model.enums.GenderEnum.M;
+
 @Service
 public class PatientService {
 
@@ -42,14 +44,18 @@ public class PatientService {
 
     public PatientDTO createPatient(PatientDTO patientDTO, String authorization) {
 
-        var userName = userTokenService.findUserByToken(authorization).getFullName();
+        var genderDefaut = M;
 
+        var userName = userTokenService.findUserByToken(authorization).getFullName();
         patientDTO.setCreatedBy(userName);
         patientDTO.setLastModified(LocalDate.now());
+        patientDTO.setGenderEnum(genderDefaut.getValue());
 
-        System.out.println(patientDTO.toString());
+        var patient = PatientMapper.INSTANCE.dtoToEntity(patientDTO);
 
-        var patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
+        patient.setGenderEnum(genderDefaut.getValue());
+
+        patient = repository.save(patient);
 
         assessmentService.createPatientAssessment(patient);
 
