@@ -27,8 +27,8 @@ public class PatientController {
     }
 
     @GetMapping(value = "/find-all")
-    public ResponseEntity<List<PatientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        var response = service.findAllPatient(page, limit);
+    public ResponseEntity<List<PatientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "12") int limit,  @RequestParam(value = "register", defaultValue = "") String register) {
+        var response = service.findAllPatientByRegister(page, limit, register);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

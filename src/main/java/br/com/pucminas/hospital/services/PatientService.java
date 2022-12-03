@@ -28,10 +28,10 @@ public class PatientService {
     @Autowired
     UserTokenService userTokenService;
 
-
-    public List<PatientDTO> findAllPatient(int page, int limit) {
+    public List<PatientDTO> findAllPatientByRegister(int page, int limit, String register) {
         var pageable = PageRequest.of(page, limit);
-        var pagePatient = repository.findAll(pageable);
+
+        var pagePatient = repository.findByRegisterContaining(register, pageable);
 
         return pagePatient.getContent().stream().map(PatientMapper.INSTANCE::entityToDto).collect(Collectors.toList());
     }
