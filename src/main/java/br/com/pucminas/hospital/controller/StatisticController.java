@@ -19,11 +19,9 @@ public class StatisticController {
     @Autowired
     AssessmentRepository assessmentRepository;
 
-    @GetMapping(value = "/get-statistic-by-assessment/{page}/{limit}")
-    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@RequestBody ParamsStatisticDTO paramsStatisticDTO,
-                                                                 @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                 @RequestParam(value = "limit", defaultValue = "12") int limit) {
-        var response = service.getStatisticByAssessment(paramsStatisticDTO, page, limit);
+    @GetMapping(value = "/get-statistic-by-assessment")
+    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@RequestBody ParamsStatisticDTO paramsStatisticDTO) {
+        var response = service.getStatisticByAssessment(paramsStatisticDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

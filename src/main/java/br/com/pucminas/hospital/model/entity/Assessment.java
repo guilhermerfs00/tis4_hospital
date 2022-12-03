@@ -45,5 +45,7 @@ public class Assessment {
     @Column(name="cancel_reason")
     private AssesmentCancelReasonEnum cancelReason;
 
+    @Column(name = "isPatientDead")
+    private Boolean isPatientDead;
 
 }

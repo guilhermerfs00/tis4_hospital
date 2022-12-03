@@ -1,6 +1,7 @@
 package br.com.pucminas.hospital.repository;
 
 import br.com.pucminas.hospital.model.entity.Assessment;
+import br.com.pucminas.hospital.model.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,16 +24,7 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
     List<Assessment> getStatisticByAssessment(@Param("startDate") LocalDate startDate,
                                               @Param("finalDate") LocalDate finalDate);
 
-    @Query(value="select status ,COUNT(*) as qtd from assessment where call_day between  to_date(:startDate ) AND to_date(:endDate) group by status", nativeQuery = true)
-    List<Assessment> getStatusStatistic(@Param("startDate") LocalDate startDate,
-                                        @Param("endDate") LocalDate endDate);
-
-    @Query(value="select call_day, cancel_reason, COUNT(cancel_reason) as qtd from assessment where call_day between  to_date(:startDate, 'YYYY-MM-DD') AND to_date(:endDate, 'YYYY-MM-DD') and cancel_reason is not null group by call_day, cancel_reason", nativeQuery = true)
-    List<Assessment> getCancelMotivationStatistic(@Param("startDate") LocalDate startDate,
-                                        @Param("endDate") LocalDate endDate);
-
-    @Query(value = "select patient_id, count(*) as nao_atendeu_3vzs from assessment where status = 'Enviado' AND patient_id in (select patient_id FROM assessment where assessment_number = 'TERCEIRA' AND call_day between  to_date(:startDate) AND to_date(:endDate) ) group by patient_id having count(*) = 3", nativeQuery = true)
-    List<Assessment> getNoResponseStatistic(@Param("startDate") LocalDate startDate,
-                                                  @Param("endDate") LocalDate endDate);
+    @Query("SELECT a FROM Assessment a WHERE a.patient.idPatient IN :idsPatient ")
+    List<Assessment> getAssessmentsByIdPatient(List<Long> idsPatient);
 
 }
