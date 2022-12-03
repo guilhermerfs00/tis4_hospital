@@ -43,16 +43,14 @@ public class AssessmentService {
         secondAssessment.setCallDay(LocalDate.now().plusDays(SECOND_ASSESSMENT_TRY));
         secondAssessment.setPatient(patient);
         secondAssessment.setStatus(AssesmentStatusEnum.AGENDADO);
-
-        firstAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.SEGUNDA.getValue());
+        secondAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.SEGUNDA.getValue());
         secondAssessment.setSymptomsDetail("");
 
         Assessment thirdAssessment = new Assessment();
         thirdAssessment.setCallDay(LocalDate.now().plusDays(THIRD_ASSESSMENT_TRY));
         thirdAssessment.setPatient(patient);
         thirdAssessment.setStatus(AssesmentStatusEnum.AGENDADO);
-
-        firstAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.TERCEIRA.getValue());
+        thirdAssessment.setAssessmentNumberEnum(AssessmentNumberEnum.TERCEIRA.getValue());
         thirdAssessment.setSymptomsDetail("");
 
         assessments.add(firstAssessment);

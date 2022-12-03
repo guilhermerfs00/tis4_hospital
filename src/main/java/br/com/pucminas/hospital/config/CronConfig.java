@@ -13,9 +13,9 @@ public class CronConfig {
     @Autowired
     SmsService smsService;
 
-    @Scheduled(cron = "0 1/1 * 1/1 * ?")
-    public void sendMessageCron() {
-        smsService.dailyCallAssessment();
-    }
+//    @Scheduled(cron = "0 1/1 * 1/1 * ?")
+//    public void sendMessageCron() {
+//        smsService.dailyCallAssessment();
+//    }
 
 }

@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StatisticDTO {
 
-    private Integer answeredCalls;
-    private Integer missedCalls;
-    private Integer deaths;
-    private Integer total;
-    private Integer unsuccessfully;
-    private Integer didtRespondThreeAttempts;
-    private Integer nonExistentNumber;
-    private Integer unavailableNumber;
-    private Integer isntPatientsPhone;
+    private Integer answeredCalls = 0;
+    private Integer missedCalls = 0;
+    private Integer deaths = 0;
+    private Integer total = 0;
+    private Integer unsuccessfully = 0;
+    private Integer didtRespondThreeAttempts = 0;
+    private Integer nonExistentNumber = 0;
+    private Integer unavailableNumber = 0;
+    private Integer isntPatientsPhone = 0;
 
 }

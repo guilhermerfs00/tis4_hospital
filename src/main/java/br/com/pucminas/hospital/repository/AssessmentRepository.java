@@ -25,6 +25,6 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
                                               @Param("finalDate") LocalDate finalDate);
 
     @Query("SELECT a FROM Assessment a WHERE a.patient.idPatient IN :idsPatient ")
-    List<Assessment> getAssessmentsByIdPatient(List<Long> idsPatient);
+    List<Assessment> getAssessmentsByIdPatient(@Param("idsPatient") List<Long> idsPatient);
 
 }

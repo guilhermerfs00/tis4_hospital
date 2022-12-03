@@ -50,14 +50,13 @@ public class UserTokenService {
 
         user.setUserName(userDTO.getUserName());
         user.setFullName(userDTO.getFullName());
+        user.setEmail(userDTO.getEmail());
 
         var permission = userDTO.getPermission().stream().map(permissionDTO
                 -> PermissionMapper.INSTANCE.dtoToEntity(permissionDTO)).collect(Collectors.toList());
 
         user.setPermission(permission);
 
-        var u = userRepository.save(user);
-
-        return UserMapper.INSTANCE.entityToDto(u);
+        return UserMapper.INSTANCE.entityToDto(userRepository.save(user));
     }
 }

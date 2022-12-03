@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class PatientService {
         return PatientMapper.INSTANCE.entityToDto(optPatient);
     }
 
+    @Transactional
     public PatientDTO createPatient(PatientDTO patientDTO, String authorization) {
 
         var genderDefaut = M;
@@ -77,7 +79,7 @@ public class PatientService {
             patient.setPhoneNumber(patientDTO.getPhoneNumber());
             patient.setSurgeryDate(patientDTO.getSurgeryDate());
 
-            patient = repository.save(PatientMapper.INSTANCE.dtoToEntity(patientDTO));
+            patient = repository.save(patient);
 
             return PatientMapper.INSTANCE.entityToDto(patient);
         } catch (Exception e) {

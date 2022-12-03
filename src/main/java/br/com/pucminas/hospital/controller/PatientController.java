@@ -38,7 +38,7 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping(value = "/update-patient")
+    @PutMapping(value = "/update-patient")
     public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patientDTO,
                                                     @RequestHeader("Authorization") String authorization) {
         var response = service.updatePatient(patientDTO, authorization);

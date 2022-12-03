@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,15 +23,18 @@ public class StatisticService {
     private AssessmentRepository repository;
 
 
-    public StatisticDTO getStatisticByAssessment(ParamsStatisticDTO paramsStatisticDTO) {
+    public StatisticDTO getStatisticByAssessment(String di, String df) {
+
+        var initialDate = LocalDate.parse(di);
+        var finalDate = LocalDate.parse(df);
 
         StatisticDTO statisticDTO = new StatisticDTO();
 
-        var assessmentList = repository.getStatisticByAssessment(paramsStatisticDTO.getInitialDate(), paramsStatisticDTO.getFinalDate());
+        var assessmentList = repository.getStatisticByAssessment(initialDate, finalDate);
 
         assessmentList.stream().forEach(a -> {
 
-            statisticDTO.setTotal(statisticDTO.getMissedCalls() + 1);
+            statisticDTO.setTotal(statisticDTO.getTotal() + 1);
 
             if (a.getStatus().equals(RESPONDIDO)) {
                 statisticDTO.setAnsweredCalls(statisticDTO.getAnsweredCalls() + 1);
@@ -40,19 +44,19 @@ public class StatisticService {
                 statisticDTO.setMissedCalls(statisticDTO.getMissedCalls() + 1);
             }
 
-            if (a.getCancelReason().equals(TELEFONE_INEXISTE)) {
+            if (TELEFONE_INEXISTE.equals(a.getCancelReason())) {
                 statisticDTO.setNonExistentNumber(statisticDTO.getNonExistentNumber() + 1);
             }
 
-            if (a.getCancelReason().equals(TELEFONE_INDISPONIVEL)) {
+            if (TELEFONE_INDISPONIVEL.equals(a.getCancelReason())) {
                 statisticDTO.setUnavailableNumber(statisticDTO.getUnavailableNumber() + 1);
             }
 
-            if (a.getCancelReason().equals(TELEFONE_NAO_PERTENCE)) {
+            if (TELEFONE_NAO_PERTENCE.equals(a.getCancelReason())) {
                 statisticDTO.setIsntPatientsPhone(statisticDTO.getIsntPatientsPhone() + 1);
             }
 
-            if (a.getIsPatientDead().equals(Boolean.TRUE)) {
+            if (Boolean.TRUE.equals(a.getIsPatientDead())) {
                 statisticDTO.setDeaths(statisticDTO.getDeaths() + 1);
             }
         });
@@ -76,6 +80,4 @@ public class StatisticService {
 
         return statisticDTO;
     }
-
-
 }

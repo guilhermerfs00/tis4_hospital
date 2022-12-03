@@ -1,8 +1,6 @@
 package br.com.pucminas.hospital.controller;
 
-import br.com.pucminas.hospital.model.dto.ParamsStatisticDTO;
 import br.com.pucminas.hospital.model.dto.StatisticDTO;
-import br.com.pucminas.hospital.repository.AssessmentRepository;
 import br.com.pucminas.hospital.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +14,9 @@ public class StatisticController {
     @Autowired
     StatisticService service;
 
-    @Autowired
-    AssessmentRepository assessmentRepository;
-
-    @GetMapping(value = "/get-statistic-by-assessment")
-    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@RequestBody ParamsStatisticDTO paramsStatisticDTO) {
-        var response = service.getStatisticByAssessment(paramsStatisticDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @GetMapping(value = "/get-statistic-by-assessment/{initialDate}/{finalDate}")
+    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@RequestParam String initialDate, @RequestParam String finalDate) {
+        var response = service.getStatisticByAssessment(initialDate, finalDate);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
 }
