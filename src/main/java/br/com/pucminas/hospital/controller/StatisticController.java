@@ -15,7 +15,7 @@ public class StatisticController {
     StatisticService service;
 
     @GetMapping(value = "/get-statistic-by-assessment/{initialDate}/{finalDate}")
-    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@PathVariable(value="initialDate") String initialDate, @PathVariable(value="initialDate") String finalDate) {
+    public ResponseEntity<StatisticDTO> getStatisticByAssessment(@PathVariable(value="initialDate") String initialDate, @PathVariable(value="finalDate") String finalDate) {
         var response = service.getStatisticByAssessment(initialDate, finalDate);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
